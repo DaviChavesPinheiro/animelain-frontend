@@ -1,4 +1,5 @@
 import React, { useCallback, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { FiMail, FiLock, FiArrowLeft, FiUser } from 'react-icons/fi';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
@@ -31,7 +32,7 @@ const SignUp: React.FC = () => {
           .required('E-mail obrigatório')
           .email('E-mail inválido'),
         password: Yup.string()
-          .required('Senha obrigatório')
+          .required('Senha obrigatória')
           .min(6, 'Mínimo 6 dígitos'),
       });
 
@@ -62,10 +63,10 @@ const SignUp: React.FC = () => {
 
           <Button type="submit">Criar</Button>
         </Form>
-        <a href="signup">
+        <Link to="/">
           <FiArrowLeft />
           Voltar para login
-        </a>
+        </Link>
       </Content>
     </Container>
   );

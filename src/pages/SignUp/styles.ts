@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { lighten } from 'polished';
 
 export const Container = styled.div`
@@ -16,6 +16,17 @@ export const Logo = styled.img`
   top: 15px;
 `;
 
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
 export const Content = styled.div`
   width: 100%;
   max-width: 400px;
@@ -29,6 +40,8 @@ export const Content = styled.div`
 
   display: flex;
   flex-direction: column;
+
+  animation: ${fadeIn} 1s;
 
   form {
     width: 100%;
