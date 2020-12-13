@@ -1,6 +1,6 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FiMail, FiLock, FiLogIn } from 'react-icons/fi';
+import { FiMail, FiLogIn } from 'react-icons/fi';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
 
@@ -12,71 +12,67 @@ import Input from '../../components/Input';
 import getValidationErrors from '../../utils/getValidationErrors';
 
 import { Container, Content, Logo } from './styles';
-import { useAuth } from '../../hooks/auth';
+import api from '../../services/api';
 
-interface SignInFormData {
+interface ForgotPasswordFormData {
   email: string;
-  password: string;
 }
 
-const SignIn: React.FC = () => {
+const ForgotPassword: React.FC = () => {
+  const [loading, setLoading] = useState(false);
   const formRef = useRef<FormHandles>(null);
-  const { signIn } = useAuth();
 
-  const handleSignIn = useCallback(
-    async (data: SignInFormData) => {
+  const handleForgotPassword = useCallback(
+    async (data: ForgotPasswordFormData) => {
       try {
+        setLoading(true);
         formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
           email: Yup.string()
             .required('E-mail obrigatório')
             .email('E-mail inválido'),
-          password: Yup.string().required('Senha obrigatória'),
         });
 
         await schema.validate(data, { abortEarly: false });
 
-        await signIn({
+        await api.post('/password/forgot', {
           email: data.email,
-          password: data.password,
         });
+
+        formRef.current?.reset();
       } catch (error) {
         if (error instanceof Yup.ValidationError) {
           const errors = getValidationErrors(error);
           formRef.current?.setErrors(errors);
         }
+      } finally {
+        setLoading(false);
       }
     },
-    [signIn],
+    [],
   );
 
   return (
     <Container>
       <Logo src={AnimeLandLogo} />
       <Content>
-        <Form onSubmit={handleSignIn} ref={formRef}>
-          <h1>Entrar</h1>
+        <Form onSubmit={handleForgotPassword} ref={formRef}>
+          <h1>Recuperação de senha</h1>
 
           <Input name="email" type="text" placeholder="E-mail" icon={FiMail} />
-          <Input
-            name="password"
-            type="password"
-            placeholder="Senha"
-            icon={FiLock}
-          />
 
-          <Button type="submit">Entrar</Button>
-
-          <Link to="forgot-password">Esqueci minha senha</Link>
+          <Button loading={loading} type="submit">
+            Enviar e-mail de recuperação
+          </Button>
         </Form>
-        <Link to="/signup">
+        <Link to="/">
           <FiLogIn />
-          Criar conta
+          Voltar ao login
         </Link>
       </Content>
     </Container>
   );
 };
 
-export default SignIn;
+export default ForgotPassword;
