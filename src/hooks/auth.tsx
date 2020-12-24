@@ -28,8 +28,8 @@ const AuthContext = createContext({} as AuthContextData);
 
 export const AuthProvider: React.FC = ({ children }) => {
   const [data, setData] = useState<AuthState>(() => {
-    const token = localStorage.getItem('@AnimeLand:token');
-    const user = localStorage.getItem('@AnimeLand:user');
+    const token = localStorage.getItem('@AnimeLain:token');
+    const user = localStorage.getItem('@AnimeLain:user');
 
     if (token && user) {
       return { token, user: JSON.parse(user) };
@@ -43,17 +43,19 @@ export const AuthProvider: React.FC = ({ children }) => {
 
     const { token, user } = response.data;
 
-    localStorage.setItem('@AnimeLand:token', token);
-    localStorage.setItem('@AnimeLand:user', JSON.stringify(user));
+    localStorage.setItem('@AnimeLain:token', token);
+    localStorage.setItem('@AnimeLain:user', JSON.stringify(user));
+
+    if (token && user) {
+      api.defaults.headers.authorization = `Bearer ${token}`;
+    }
 
     setData({ token, user });
-
-    console.log({ token, user });
   }, []);
 
   const signOut = useCallback(() => {
-    localStorage.removeItem('@AnimeLand:token');
-    localStorage.removeItem('@AnimeLand:user');
+    localStorage.removeItem('@AnimeLain:token');
+    localStorage.removeItem('@AnimeLain:user');
 
     setData({} as AuthState);
   }, []);

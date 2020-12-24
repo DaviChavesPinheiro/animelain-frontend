@@ -6,7 +6,6 @@ import Routes from './routes';
 import { AuthProvider } from './hooks/auth';
 
 const App: React.FC = () => {
-  console.log('Ok');
   return (
     <BrowserRouter>
       <AuthProvider>
