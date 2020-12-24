@@ -1,17 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { FiPlayCircle, FiPower } from 'react-icons/fi';
-import { Link } from 'react-router-dom';
-import { useAuth } from '../../hooks/auth';
-import {
-  Anime,
-  Container,
-  Content,
-  Header,
-  HeaderContent,
-  Profile,
-} from './styles';
-import AnimeLainLogo from '../../assets/AnimeLain.svg';
+import { FiAlertCircle, FiPlayCircle } from 'react-icons/fi';
+import { Anime, Container, Content, ImageContainer } from './styles';
 import api from '../../services/api';
+import Header from '../../components/Header';
 
 interface Anime {
   id: string;
@@ -22,7 +13,6 @@ interface Anime {
 }
 
 const Dashboard: React.FC = () => {
-  const { user, signOut } = useAuth();
   const [animes, setAnimes] = useState<Anime[]>([]);
 
   useEffect(() => {
@@ -33,29 +23,18 @@ const Dashboard: React.FC = () => {
 
   return (
     <Container>
-      <Header>
-        <HeaderContent>
-          <img src={AnimeLainLogo} alt="AnimeLain" />
-
-          <Profile>
-            <img src={user.avatar_url} alt={user.name} />
-            <div>
-              <span>Bem-vindo,</span>
-              <Link to="/profile">
-                <strong>{user.name}</strong>
-              </Link>
-            </div>
-          </Profile>
-          <button type="button" onClick={signOut}>
-            <FiPower />
-          </button>
-        </HeaderContent>
-      </Header>
+      <Header />
 
       <Content>
         {animes.map(anime => (
           <Anime key={anime.id}>
-            <img src={anime.profile_url} alt={anime.title} />
+            <ImageContainer>
+              {anime.profile_url ? (
+                <img src={anime.profile_url} alt={anime.title} />
+              ) : (
+                <FiAlertCircle size="30" color="#565656" />
+              )}
+            </ImageContainer>
             <div>
               <h2>{anime.title}</h2>
               <p>{anime.description}</p>
