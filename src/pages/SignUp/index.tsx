@@ -5,7 +5,7 @@ import { Form } from '@unform/web';
 import * as Yup from 'yup';
 
 import { FormHandles } from '@unform/core';
-import AnimeLandLogo from '../../assets/AnimeLand.svg';
+import AnimeLainLogo from '../../assets/AnimeLain.svg';
 
 import Button from '../../components/Button';
 import Input from '../../components/Input';
@@ -56,7 +56,7 @@ const SignUp: React.FC = () => {
 
   return (
     <Container>
-      <Logo src={AnimeLandLogo} />
+      <Logo src={AnimeLainLogo} />
       <Content>
         <Form onSubmit={handleSignUp} ref={formRef}>
           <h1>Criar Conta</h1>
