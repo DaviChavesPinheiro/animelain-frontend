@@ -17,14 +17,38 @@ import * as Yup from 'yup';
 
 import { FormHandles } from '@unform/core';
 
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
 import getValidationErrors from '../../utils/getValidationErrors';
 
-import { AvatarInput, BannerInput, Container, Content } from './styles';
+import {
+  AvatarInput,
+  BannerInput,
+  Character,
+  CharactersContainer,
+  Container,
+  Content,
+  Genre,
+  GenresContainer,
+} from './styles';
 import api from '../../services/api';
 import Header from '../../components/Header';
+
+interface Character {
+  id: string;
+  name: string;
+  profile_url: string;
+}
+
+interface Genre {
+  id: string;
+  score: number;
+  category: {
+    id: string;
+    name: string;
+  };
+}
 
 interface Anime {
   id: string;
@@ -33,6 +57,8 @@ interface Anime {
   profile_url: string;
   banner_url: string;
   episodesAmount: number;
+  genres: Genre[];
+  characters: Character[];
 }
 
 interface AnimeProfileFormData {
@@ -172,6 +198,29 @@ const AnimeProfile: React.FC = () => {
             Salvar
           </Button>
         </Form>
+      </Content>
+      <Content>
+        <GenresContainer>
+          {anime.genres?.map(genre => (
+            <Genre key={genre.id}>
+              <Link to="/animes">{genre.category.name}</Link>
+              <span>{`${genre.score}%`}</span>
+            </Genre>
+          ))}
+        </GenresContainer>
+      </Content>
+      <Content>
+        <CharactersContainer>
+          {anime.characters?.map(character => (
+            <Character key={character.id} to="/animes">
+              {character.profile_url ? (
+                <img src={character.profile_url} alt={character.name} />
+              ) : (
+                <FiAlertCircle size="30" color="#565656" />
+              )}
+            </Character>
+          ))}
+        </CharactersContainer>
       </Content>
     </Container>
   );

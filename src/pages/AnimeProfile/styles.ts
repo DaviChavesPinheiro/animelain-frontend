@@ -1,11 +1,14 @@
 import styled from 'styled-components';
 import { shade } from 'polished';
+import { Link } from 'react-router-dom';
 
 export const Container = styled.div``;
 
-export const Content = styled.main`
+export const Content = styled.section`
   max-width: 800px;
   margin: 24px auto;
+  margin-bottom: 0px;
+
   padding: 40px 60px;
 
   display: flex;
@@ -130,5 +133,70 @@ export const BannerInput = styled.div`
     input {
       display: none;
     }
+  }
+`;
+
+export const GenresContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`;
+
+export const Genre = styled.div`
+  display: flex;
+  align-items: center;
+
+  padding: 5px 10px;
+
+  margin-bottom: 20px;
+
+  border: 1px solid #565656;
+  border-radius: 5px;
+
+  a {
+    text-decoration: none;
+    color: #565656;
+  }
+
+  span {
+    margin-left: 20px;
+    color: #565656;
+    font-size: 0.8em;
+  }
+
+  & + div {
+    margin-left: 20px;
+  }
+`;
+
+export const CharactersContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`;
+
+export const Character = styled(Link)`
+  width: 186px;
+  height: 260px;
+
+  position: relative;
+
+  border-radius: 3px;
+
+  margin-bottom: 50px;
+
+  background-color: #343434;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & + a {
+    margin-left: 20px;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 3px;
   }
 `;
