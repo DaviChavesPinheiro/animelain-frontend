@@ -12,7 +12,7 @@ export const Container = styled.button`
   padding: 0 16px;
 
   font-weight: 500;
-  color: #312e38;
+  color: white;
   background: #03a9f5;
 
   transition: background-color 0.2s;
