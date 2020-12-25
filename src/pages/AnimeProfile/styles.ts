@@ -171,6 +171,7 @@ export const Genre = styled.div`
 export const CharactersContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-around;
 `;
 
 export const Character = styled(Link)`
@@ -189,6 +190,8 @@ export const Character = styled(Link)`
   justify-content: center;
   align-items: center;
 
+  overflow: hidden;
+
   & + a {
     margin-left: 20px;
   }
@@ -198,5 +201,22 @@ export const Character = styled(Link)`
     height: 100%;
     object-fit: cover;
     border-radius: 3px;
+  }
+`;
+
+export const CharacterNameContainer = styled.div`
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  background-color: #00000099;
+  padding: 3px 5px;
+
+  span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    color: #9e9e9e;
+    font-size: 1em;
   }
 `;

@@ -26,6 +26,7 @@ import {
   AvatarInput,
   BannerInput,
   Character,
+  CharacterNameContainer,
   CharactersContainer,
   Container,
   Content,
@@ -218,6 +219,9 @@ const AnimeProfile: React.FC = () => {
               ) : (
                 <FiAlertCircle size="30" color="#565656" />
               )}
+              <CharacterNameContainer>
+                <span>{character.name}</span>
+              </CharacterNameContainer>
             </Character>
           ))}
         </CharactersContainer>
