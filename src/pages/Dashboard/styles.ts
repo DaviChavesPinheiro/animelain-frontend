@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 export const Container = styled.div``;
 
@@ -8,12 +9,12 @@ export const Content = styled.main`
   display: flex;
   flex-direction: column;
 
-  div + div {
+  a + a {
     margin-top: 20px;
   }
 `;
 
-export const Anime = styled.div`
+export const Anime = styled(Link)`
   flex: 1;
 
   display: flex;
@@ -24,6 +25,10 @@ export const Anime = styled.div`
   background: #1e1e1e;
 
   border-radius: 8px;
+
+  text-decoration: none;
+
+  color: unset;
 
   > div {
     padding-left: 20px;

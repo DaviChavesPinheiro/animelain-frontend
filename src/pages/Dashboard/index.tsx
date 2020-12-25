@@ -27,7 +27,7 @@ const Dashboard: React.FC = () => {
 
       <Content>
         {animes.map(anime => (
-          <Anime key={anime.id}>
+          <Anime key={anime.id} to={`/animes/${anime.id}`}>
             <ImageContainer>
               {anime.profile_url ? (
                 <img src={anime.profile_url} alt={anime.title} />
