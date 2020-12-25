@@ -33,6 +33,8 @@ export const AuthProvider: React.FC = ({ children }) => {
     const user = localStorage.getItem('@AnimeLain:user');
 
     if (token && user) {
+      api.defaults.headers.authorization = `Bearer ${token}`;
+
       return { token, user: JSON.parse(user) };
     }
 
@@ -47,9 +49,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     localStorage.setItem('@AnimeLain:token', token);
     localStorage.setItem('@AnimeLain:user', JSON.stringify(user));
 
-    if (token && user) {
-      api.defaults.headers.authorization = `Bearer ${token}`;
-    }
+    api.defaults.headers.authorization = `Bearer ${token}`;
 
     setData({ token, user });
   }, []);

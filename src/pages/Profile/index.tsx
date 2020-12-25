@@ -24,29 +24,32 @@ const Profile: React.FC = () => {
 
   const formRef = useRef<FormHandles>(null);
 
-  const handleSubmit = useCallback(async (data: ProfileFormData) => {
-    try {
-      formRef.current?.setErrors({});
+  const handleSubmit = useCallback(
+    async (data: ProfileFormData) => {
+      try {
+        formRef.current?.setErrors({});
 
-      const schema = Yup.object().shape({
-        name: Yup.string().required('Nome obrigatório'),
-        email: Yup.string()
-          .required('E-mail obrigatório')
-          .email('E-mail inválido'),
-      });
+        const schema = Yup.object().shape({
+          name: Yup.string().required('Nome obrigatório'),
+          email: Yup.string()
+            .required('E-mail obrigatório')
+            .email('E-mail inválido'),
+        });
 
-      await schema.validate(data, { abortEarly: false });
+        await schema.validate(data, { abortEarly: false });
 
-      api.put('/profile', data).then(response => {
-        updateUser(response.data);
-      });
-    } catch (error) {
-      if (error instanceof Yup.ValidationError) {
-        const errors = getValidationErrors(error);
-        formRef.current?.setErrors(errors);
+        api.put('/profile', data).then(response => {
+          updateUser(response.data);
+        });
+      } catch (error) {
+        if (error instanceof Yup.ValidationError) {
+          const errors = getValidationErrors(error);
+          formRef.current?.setErrors(errors);
+        }
       }
-    }
-  }, []);
+    },
+    [updateUser],
+  );
 
   const handleAvatarChange = useCallback(
     async (e: ChangeEvent<HTMLInputElement>) => {
