@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { shade } from 'polished';
+import { shade, lighten } from 'polished';
 import { Link } from 'react-router-dom';
 
 export const Container = styled.div``;
@@ -191,10 +191,81 @@ export const Character = styled(Link)`
   justify-content: center;
   align-items: center;
 
+  & + a {
+    margin-left: 20px;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 3px;
+  }
+
+  &:hover button {
+    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  button {
+    display: none;
+    position: absolute;
+
+    padding: 3px;
+
+    border: 1px solid #565656;
+    border-radius: 50%;
+    right: -10px;
+    top: -10px;
+
+    cursor: pointer;
+    color: #565656;
+    background: #0000008f;
+
+    transition: background-color 0.2s;
+
+    &:hover {
+      display: block;
+      background: ${lighten(0.2, '#0000008f')};
+      color: ${lighten(0.2, '#565656')};
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+`;
+
+export const AddCharacter = styled.button.attrs({ type: 'button' })`
+  width: 186px;
+  height: 260px;
+
+  position: relative;
+
+  border-radius: 3px;
+  border: none;
+
+  margin-bottom: 50px;
+
+  background-color: #343434;
+  color: #565656;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   overflow: hidden;
+
+  transition: background-color 0.2s;
 
   & + a {
     margin-left: 20px;
+  }
+
+  &:hover {
+    background-color: ${lighten(0.1, '#343434')};
+    color: ${lighten(0.2, '#565656')};
   }
 
   img {

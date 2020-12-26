@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import { FormHandles } from '@unform/core';
 
 import Button from '../../components/Button';
-import Input from '../../components/Input';
+import Input from '../../components/inputs/Input';
 import getValidationErrors from '../../utils/getValidationErrors';
 
 import { AvatarInput, Container, Content } from './styles';

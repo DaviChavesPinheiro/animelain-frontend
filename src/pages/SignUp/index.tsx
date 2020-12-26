@@ -8,7 +8,7 @@ import { FormHandles } from '@unform/core';
 import AnimeLainLogo from '../../assets/AnimeLain.svg';
 
 import Button from '../../components/Button';
-import Input from '../../components/Input';
+import Input from '../../components/inputs/Input';
 import getValidationErrors from '../../utils/getValidationErrors';
 
 import { Container, Content, Logo } from './styles';
