@@ -15,6 +15,7 @@ import CreateAnimePage from '../pages/CreateAnimePage';
 import CharacterProfile from '../pages/CharacterProfile';
 import CreateCharacterPage from '../pages/CreateCharacterPage';
 import CategoryProfile from '../pages/CategoryProfile';
+import CreateCategoryPage from '../pages/CreateCategoryPage';
 
 const Routes: React.FC = () => (
   <Switch>
@@ -35,6 +36,7 @@ const Routes: React.FC = () => (
     <Route path="/characters/:id" component={CharacterProfile} isPrivate />
     {/* <Route path="/characters" component={Dashboard} isPrivate /> */}
 
+    <Route path="/categories/create" component={CreateCategoryPage} isPrivate />
     <Route path="/categories/:id" component={CategoryProfile} isPrivate />
     {/* <Route path="/categories" component={Dashboard} isPrivate /> */}
 
