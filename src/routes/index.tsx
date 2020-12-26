@@ -11,6 +11,7 @@ import ResetPassword from '../pages/ResetPassword';
 import Dashboard from '../pages/Dashboard';
 import Profile from '../pages/Profile';
 import AnimeProfile from '../pages/AnimeProfile';
+import CharacterProfile from '../pages/CharacterProfile';
 
 const Routes: React.FC = () => (
   <Switch>
@@ -21,6 +22,9 @@ const Routes: React.FC = () => (
 
     <Route path="/animes/:id" component={AnimeProfile} isPrivate />
     <Route path="/animes" component={Dashboard} isPrivate />
+
+    <Route path="/characters/:id" component={CharacterProfile} isPrivate />
+    {/* <Route path="/characters" component={Dashboard} isPrivate /> */}
 
     <Route path="/profile" component={Profile} isPrivate />
   </Switch>
