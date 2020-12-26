@@ -204,7 +204,9 @@ const AnimeProfile: React.FC = () => {
         <GenresContainer>
           {anime.genres?.map(genre => (
             <Genre key={genre.id}>
-              <Link to="/animes">{genre.category.name}</Link>
+              <Link to={`/categories/${genre.category.id}`}>
+                {genre.category.name}
+              </Link>
               <span>{`${genre.score}%`}</span>
             </Genre>
           ))}
