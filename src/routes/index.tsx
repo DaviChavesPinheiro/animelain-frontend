@@ -13,6 +13,7 @@ import Profile from '../pages/Profile';
 import AnimeProfile from '../pages/AnimeProfile';
 import CreateAnimePage from '../pages/CreateAnimePage';
 import CharacterProfile from '../pages/CharacterProfile';
+import CreateCharacterPage from '../pages/CreateCharacterPage';
 import CategoryProfile from '../pages/CategoryProfile';
 
 const Routes: React.FC = () => (
@@ -26,6 +27,11 @@ const Routes: React.FC = () => (
     <Route path="/animes/:id" component={AnimeProfile} isPrivate />
     <Route path="/animes" component={Dashboard} isPrivate />
 
+    <Route
+      path="/characters/create"
+      component={CreateCharacterPage}
+      isPrivate
+    />
     <Route path="/characters/:id" component={CharacterProfile} isPrivate />
     {/* <Route path="/characters" component={Dashboard} isPrivate /> */}
 
