@@ -213,6 +213,10 @@ const AnimeProfile: React.FC = () => {
               <span>{`${genre.score}%`}</span>
             </Genre>
           ))}
+          <Genre>
+            <Link to="/categories/create">Novo</Link>
+            <FiPlus />
+          </Genre>
         </GenresContainer>
       </Content>
       <Content>

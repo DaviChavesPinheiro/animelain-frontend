@@ -157,7 +157,8 @@ export const Genre = styled.div`
     color: #565656;
   }
 
-  span {
+  span,
+  svg {
     margin-left: 20px;
     color: #565656;
     font-size: 0.8em;
