@@ -9,6 +9,7 @@ import {
   FiAlertCircle,
   FiCamera,
   FiPlayCircle,
+  FiPlus,
   FiType,
   FiUser,
 } from 'react-icons/fi';
@@ -228,6 +229,9 @@ const AnimeProfile: React.FC = () => {
               </CharacterNameContainer>
             </Character>
           ))}
+          <Character to="/characters/create">
+            <FiPlus size="30" color="#565656" />
+          </Character>
         </CharactersContainer>
       </Content>
     </Container>
