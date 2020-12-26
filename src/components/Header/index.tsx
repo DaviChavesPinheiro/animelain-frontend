@@ -12,7 +12,9 @@ const Header: React.FC = () => {
   return (
     <Container>
       <Content>
-        <img src={AnimeLainLogo} alt="AnimeLain" />
+        <Link to="/">
+          <img src={AnimeLainLogo} alt="AnimeLain" />
+        </Link>
 
         <Profile>
           <ImageContainer>

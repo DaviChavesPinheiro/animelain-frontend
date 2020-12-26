@@ -11,6 +11,7 @@ import ResetPassword from '../pages/ResetPassword';
 import Dashboard from '../pages/Dashboard';
 import Profile from '../pages/Profile';
 import AnimeProfile from '../pages/AnimeProfile';
+import CreateAnimePage from '../pages/CreateAnimePage';
 import CharacterProfile from '../pages/CharacterProfile';
 import CategoryProfile from '../pages/CategoryProfile';
 
@@ -21,6 +22,7 @@ const Routes: React.FC = () => (
     <Route path="/forgot-password" component={ForgotPassword} />
     <Route path="/reset-password" component={ResetPassword} />
 
+    <Route path="/animes/create" component={CreateAnimePage} isPrivate />
     <Route path="/animes/:id" component={AnimeProfile} isPrivate />
     <Route path="/animes" component={Dashboard} isPrivate />
 

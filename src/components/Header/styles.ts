@@ -10,9 +10,13 @@ export const Content = styled.div`
   margin: 0 auto;
   display: flex;
   align-items: center;
-  > img {
-    height: 30px;
+
+  a {
+    img {
+      height: 30px;
+    }
   }
+
   button {
     margin-left: auto;
     background: transparent;

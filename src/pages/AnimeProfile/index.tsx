@@ -92,7 +92,9 @@ const AnimeProfile: React.FC = () => {
         formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
-          title: Yup.string().required('Titulo obrigatório'),
+          title: Yup.string()
+            .trim('Título inválido')
+            .required('Titulo obrigatório'),
           description: Yup.string().required('Descrição obrigatória'),
           episodesAmount: Yup.number()
             .required('Episídios obrigatórios')
