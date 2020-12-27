@@ -141,31 +141,82 @@ export const GenresContainer = styled.div`
   flex-wrap: wrap;
 `;
 
-export const Genre = styled.div`
+export const Genre = styled(Link)`
+  display: flex;
+  align-items: center;
+
+  padding: 5px 10px;
+
+  margin: 0px 10px;
+  margin-bottom: 20px;
+
+  border: 1px solid #565656;
+  border-radius: 5px;
+  text-decoration: none;
+  color: #565656;
+
+  position: relative;
+
+  span {
+    margin-left: 20px;
+    color: #565656;
+    font-size: 0.8em;
+  }
+
+  &:hover button {
+    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  button {
+    display: none;
+    position: absolute;
+
+    padding: 3px;
+
+    border: 1px solid #565656;
+    border-radius: 50%;
+    right: -10px;
+    top: -10px;
+
+    cursor: pointer;
+    color: #565656;
+    background: #0000008f;
+
+    transition: background-color 0.2s;
+
+    &:hover {
+      display: block;
+      background: ${lighten(0.2, '#0000008f')};
+      color: ${lighten(0.2, '#565656')};
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+`;
+
+export const AddGenre = styled.button.attrs({ type: 'button' })`
   display: flex;
   align-items: center;
 
   padding: 5px 10px;
 
   margin-bottom: 20px;
+  margin-left: 20px;
 
-  border: 1px solid #565656;
+  border: 1px solid #03a9f5;
   border-radius: 5px;
 
-  a {
-    text-decoration: none;
-    color: #565656;
-  }
+  color: #03a9f5;
+  background: transparent;
+  font-size: 1em;
 
-  span,
   svg {
     margin-left: 20px;
-    color: #565656;
-    font-size: 0.8em;
-  }
-
-  & + div {
-    margin-left: 20px;
+    font-size: 1.2em;
   }
 `;
 
@@ -183,6 +234,7 @@ export const Character = styled(Link)`
 
   border-radius: 3px;
 
+  margin: 0px 10px;
   margin-bottom: 50px;
 
   background-color: #343434;
@@ -190,10 +242,6 @@ export const Character = styled(Link)`
   display: flex;
   justify-content: center;
   align-items: center;
-
-  & + a {
-    margin-left: 20px;
-  }
 
   img {
     width: 100%;
@@ -244,12 +292,13 @@ export const AddCharacter = styled.button.attrs({ type: 'button' })`
   position: relative;
 
   border-radius: 3px;
-  border: none;
+  border: 1px solid #03a9f545;
 
   margin-bottom: 50px;
+  margin-left: 20px;
 
   background-color: #343434;
-  color: #565656;
+  color: #03a9f5;
 
   display: flex;
   justify-content: center;
@@ -259,13 +308,10 @@ export const AddCharacter = styled.button.attrs({ type: 'button' })`
 
   transition: background-color 0.2s;
 
-  & + a {
-    margin-left: 20px;
-  }
-
   &:hover {
     background-color: ${lighten(0.1, '#343434')};
-    color: ${lighten(0.2, '#565656')};
+    color: ${lighten(0.2, '#03a9f5')};
+    border: 1px solid #03a9f5;
   }
 
   img {

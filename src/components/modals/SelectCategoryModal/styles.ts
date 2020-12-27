@@ -1,7 +1,8 @@
 import { shade } from 'polished';
+import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
-interface CharactersContainerProps {
+interface CategoryElementProps {
   selected: boolean;
 }
 
@@ -87,61 +88,33 @@ export const Header = styled.header`
 
 export const Body = styled.div``;
 
-export const CharactersContainer = styled.div`
+export const CategoriesContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
 
   margin-top: 50px;
 `;
 
-export const CharacterContainer = styled.button<CharactersContainerProps>`
-  width: 186px;
-  height: 260px;
-
-  position: relative;
-
-  border-radius: 3px;
-  border: 1px solid transparent;
-
-  margin: 0px 10px;
-  margin-bottom: 50px;
-
-  background-color: #343434;
-
+export const CategoryElement = styled.button<CategoryElementProps>`
   display: flex;
-  justify-content: center;
   align-items: center;
 
-  overflow: hidden;
+  padding: 5px 10px;
+
+  margin: 0px 10px;
+  margin-bottom: 20px;
+
+  border: 1px solid #565656;
+  border-radius: 5px;
+
+  color: #565656;
+
+  background: transparent;
 
   ${props =>
     props.selected &&
     css`
       border: 1px solid #03a9f5;
+      color: #03a9f5;
     `}
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 3px;
-  }
-`;
-
-export const CharacterNameContainer = styled.div`
-  position: absolute;
-  width: 100%;
-  bottom: 0;
-  background-color: #00000099;
-  padding: 3px 5px;
-
-  span {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-
-    color: #9e9e9e;
-    font-size: 1em;
-  }
 `;

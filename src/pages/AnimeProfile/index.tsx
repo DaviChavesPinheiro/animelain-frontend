@@ -26,6 +26,7 @@ import getValidationErrors from '../../utils/getValidationErrors';
 
 import {
   AddCharacter,
+  AddGenre,
   AvatarInput,
   BannerInput,
   Character,
@@ -39,6 +40,7 @@ import {
 import api from '../../services/api';
 import Header from '../../components/Header';
 import SelectCharacterModal from '../../components/modals/SelectCharacterModal';
+import SelectCategoryModal from '../../components/modals/SelectCategoryModal';
 
 interface Character {
   id: string;
@@ -46,13 +48,15 @@ interface Character {
   profile_url: string;
 }
 
+interface Category {
+  id: string;
+  name: string;
+}
+
 interface Genre {
   id: string;
   score: number;
-  category: {
-    id: string;
-    name: string;
-  };
+  category: Category;
 }
 
 interface Anime {
@@ -80,6 +84,7 @@ const AnimeProfile: React.FC = () => {
   const [infoLoading, setInfoLoading] = useState(false);
   const [anime, setAnime] = useState<Anime>({} as Anime);
   const [addCharacterModalActive, setAddCharacterModalActive] = useState(false);
+  const [addCategoryModalActive, setAddCategoryModalActive] = useState(false);
   const { id } = useParams<ReactRouterDomParams>();
 
   const formRef = useRef<FormHandles>(null);
@@ -182,6 +187,48 @@ const AnimeProfile: React.FC = () => {
     [anime, id],
   );
 
+  const handleAddCategories = useCallback(
+    (categories: Category[]) => {
+      const existentCategoriesIds = anime.genres.map(
+        genre => genre.category.id,
+      );
+
+      const filteredCategories = categories.filter(
+        category => !existentCategoriesIds.includes(category.id),
+      );
+
+      const genresToBeAdded = filteredCategories.map(category => ({
+        score: 1,
+        category,
+      }));
+      const updatedAnime = {
+        ...anime,
+        genres: [...anime.genres, ...genresToBeAdded],
+      };
+
+      api.put(`/animes/${id}`, updatedAnime).then(response => {
+        setAnime(response.data);
+      });
+    },
+    [anime, id],
+  );
+
+  const handleDeleteGenre = useCallback(
+    (genre: Genre) => {
+      const updatedAnime = {
+        ...anime,
+        genres: anime.genres.filter(
+          genreElement => genreElement.id !== genre.id,
+        ),
+      };
+
+      api.put(`/animes/${id}`, updatedAnime).then(response => {
+        setAnime(response.data);
+      });
+    },
+    [anime, id],
+  );
+
   return (
     <>
       <Container>
@@ -246,17 +293,26 @@ const AnimeProfile: React.FC = () => {
         <Content>
           <GenresContainer>
             {anime.genres?.map(genre => (
-              <Genre key={genre.id}>
-                <Link to={`/categories/${genre.category.id}`}>
-                  {genre.category.name}
-                </Link>
+              <Genre key={genre.id} to={`/categories/${genre.category.id}`}>
+                <button
+                  type="button"
+                  onClick={e => {
+                    e.preventDefault();
+                    handleDeleteGenre(genre);
+                  }}
+                >
+                  <FiX size="10" />
+                </button>
+                {genre.category.name}
                 <span>{`${genre.score}%`}</span>
               </Genre>
             ))}
-            <Genre>
-              <Link to="/categories/create">Novo</Link>
+            <AddGenre
+              onClick={() => setAddCategoryModalActive(!addCategoryModalActive)}
+            >
+              Novo
               <FiPlus />
-            </Genre>
+            </AddGenre>
           </GenresContainer>
         </Content>
         <Content>
@@ -297,6 +353,12 @@ const AnimeProfile: React.FC = () => {
         <SelectCharacterModal
           onClose={() => setAddCharacterModalActive(false)}
           onFinishSelectedCharacters={handleAddCharacters}
+        />
+      )}
+      {addCategoryModalActive && (
+        <SelectCategoryModal
+          onClose={() => setAddCategoryModalActive(false)}
+          onFinishSelectedCategories={handleAddCategories}
         />
       )}
     </>
