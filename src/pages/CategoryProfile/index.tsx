@@ -28,7 +28,8 @@ interface ReactRouterDomParams {
 }
 
 const CategoryProfile: React.FC = () => {
-  const [infoLoading, setInfoLoading] = useState(false);
+  const [submitLoading, setSubmitLoading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
   const [category, setCategory] = useState<Category>({} as Category);
   const { id } = useParams<ReactRouterDomParams>();
 
@@ -43,7 +44,7 @@ const CategoryProfile: React.FC = () => {
   const handleSubmit = useCallback(
     async (data: CategoryProfileFormData) => {
       try {
-        setInfoLoading(true);
+        setSubmitLoading(true);
         formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
@@ -60,11 +61,17 @@ const CategoryProfile: React.FC = () => {
           formRef.current?.setErrors(errors);
         }
       } finally {
-        setInfoLoading(false);
+        setSubmitLoading(false);
       }
     },
     [id],
   );
+
+  const handleDelete = useCallback(async () => {
+    setDeleteLoading(true);
+    await api.delete(`/categories/${id}`);
+    setDeleteLoading(false);
+  }, [id]);
 
   return (
     <Container>
@@ -73,8 +80,18 @@ const CategoryProfile: React.FC = () => {
         <Form initialData={category} onSubmit={handleSubmit} ref={formRef}>
           <Input name="name" type="text" placeholder="Nome" icon={FiUser} />
 
-          <Button loading={infoLoading} type="submit">
+          <Button loading={submitLoading} type="submit">
             Salvar
+          </Button>
+
+          <Button
+            loading={deleteLoading}
+            loadingMessage="Deletando..."
+            type="button"
+            backgroundColor="#f50303"
+            onClick={handleDelete}
+          >
+            Deletar
           </Button>
         </Form>
       </Content>

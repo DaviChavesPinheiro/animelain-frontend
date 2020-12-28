@@ -17,10 +17,5 @@ export const Content = styled.section`
 
   form {
     width: 100%;
-
-    h1 {
-      font-weight: 500;
-      margin-bottom: 30px;
-    }
   }
 `;
