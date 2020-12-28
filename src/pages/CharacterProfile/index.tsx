@@ -45,6 +45,7 @@ interface ReactRouterDomParams {
 
 const CharacterProfile: React.FC = () => {
   const [infoLoading, setInfoLoading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
   const [character, setCharacter] = useState<Character>({} as Character);
   const { id } = useParams<ReactRouterDomParams>();
 
@@ -85,6 +86,12 @@ const CharacterProfile: React.FC = () => {
     },
     [id],
   );
+
+  const handleDelete = useCallback(async () => {
+    setDeleteLoading(true);
+    await api.delete(`/characters/${id}`);
+    setDeleteLoading(false);
+  }, [id]);
 
   const handleProfileImageChange = useCallback(
     async (e: ChangeEvent<HTMLInputElement>) => {
@@ -168,6 +175,16 @@ const CharacterProfile: React.FC = () => {
 
           <Button loading={infoLoading} type="submit">
             Salvar
+          </Button>
+
+          <Button
+            loading={deleteLoading}
+            loadingMessage="Deletando..."
+            type="button"
+            backgroundColor="#f50303"
+            onClick={handleDelete}
+          >
+            Deletar
           </Button>
         </Form>
       </Content>
