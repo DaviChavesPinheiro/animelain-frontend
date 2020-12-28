@@ -1,5 +1,4 @@
 import { shade } from 'polished';
-import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
 interface CategoryElementProps {

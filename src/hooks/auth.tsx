@@ -6,6 +6,7 @@ interface User {
   name: string;
   email: string;
   avatar_url: string;
+  isAdmin: boolean;
 }
 
 interface AuthState {
@@ -42,9 +43,16 @@ export const AuthProvider: React.FC = ({ children }) => {
   });
 
   const signIn = useCallback(async ({ email, password }: SignInCredentials) => {
-    const response = await api.post('/sessions', { email, password });
+    const response = await api.post<AuthState>('/sessions', {
+      email,
+      password,
+    });
 
     const { token, user } = response.data;
+
+    if (!user.isAdmin) {
+      throw new Error('Unauthorized');
+    }
 
     localStorage.setItem('@AnimeLain:token', token);
     localStorage.setItem('@AnimeLain:user', JSON.stringify(user));
