@@ -204,8 +204,8 @@ export const AddGenre = styled.button.attrs({ type: 'button' })`
 
   padding: 5px 10px;
 
+  margin: 0px 10px;
   margin-bottom: 20px;
-  margin-left: 20px;
 
   border: 1px solid #03a9f5;
   border-radius: 5px;
@@ -294,8 +294,8 @@ export const AddCharacter = styled.button.attrs({ type: 'button' })`
   border-radius: 3px;
   border: 1px solid #03a9f545;
 
+  margin: 0px 10px;
   margin-bottom: 50px;
-  margin-left: 20px;
 
   background-color: #343434;
   color: #03a9f5;

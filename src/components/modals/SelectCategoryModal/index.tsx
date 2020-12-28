@@ -1,7 +1,7 @@
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { FiLoader, FiSearch } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import SearchInput from '../../inputs/SearchInput';
@@ -39,6 +39,12 @@ const SelectCategoryModal: React.FC<Props> = ({
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState<Category[] | null>(null);
   const [seletedCategories, setSeletedCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    api.get('/categories').then(response => {
+      setCategories(response.data);
+    });
+  }, []);
 
   const handleSearchSubmit = useCallback(async (data: SearchFormData) => {
     try {
