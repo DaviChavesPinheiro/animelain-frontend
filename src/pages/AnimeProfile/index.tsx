@@ -82,6 +82,7 @@ interface ReactRouterDomParams {
 
 const AnimeProfile: React.FC = () => {
   const [infoLoading, setInfoLoading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
   const [anime, setAnime] = useState<Anime>({} as Anime);
   const [addCharacterModalActive, setAddCharacterModalActive] = useState(false);
   const [addCategoryModalActive, setAddCategoryModalActive] = useState(false);
@@ -126,6 +127,12 @@ const AnimeProfile: React.FC = () => {
     },
     [id],
   );
+
+  const handleDelete = useCallback(async () => {
+    setDeleteLoading(true);
+    await api.delete(`/animes/${id}`);
+    setDeleteLoading(false);
+  }, [id]);
 
   const handleProfileImageChange = useCallback(
     async (e: ChangeEvent<HTMLInputElement>) => {
@@ -287,6 +294,16 @@ const AnimeProfile: React.FC = () => {
 
             <Button loading={infoLoading} type="submit">
               Salvar
+            </Button>
+
+            <Button
+              loading={deleteLoading}
+              loadingMessage="Deletando..."
+              type="button"
+              backgroundColor="#f50303"
+              onClick={handleDelete}
+            >
+              Deletar
             </Button>
           </Form>
         </Content>
