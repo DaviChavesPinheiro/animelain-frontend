@@ -7,7 +7,6 @@ import Header from '../../components/Header';
 interface Anime {
   id: string;
   title: string;
-  description: string;
   episodesAmount: number;
   profile_url?: string;
 }
@@ -49,7 +48,6 @@ const Dashboard: React.FC = () => {
             </ImageContainer>
             <div>
               <h2>{anime.title}</h2>
-              <p>{anime.description}</p>
               <div>
                 <span>
                   <FiPlayCircle />

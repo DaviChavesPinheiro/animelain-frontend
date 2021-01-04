@@ -40,14 +40,6 @@ export const Anime = styled(Link)`
       font-size: 2em;
     }
 
-    p {
-      flex: 1;
-      padding: 5px 0px;
-
-      color: #6e6e6e;
-      line-height: 22px;
-    }
-
     span {
       color: #6e6e6e;
       margin-right: 5px;

@@ -48,6 +48,13 @@ interface Character {
   profile_url: string;
 }
 
+interface Anime_character {
+  id: string;
+  category_id: string;
+  role?: string;
+  character: Character;
+}
+
 interface Category {
   id: string;
   name: string;
@@ -62,12 +69,12 @@ interface Genre {
 interface Anime {
   id: string;
   title: string;
-  description: string;
-  profile_url: string;
-  banner_url: string;
+  description?: string;
+  profile_url?: string;
+  banner_url?: string;
   episodesAmount: number;
   genres: Genre[];
-  characters: Character[];
+  animes_characters: Anime_character[];
 }
 
 interface AnimeProfileFormData {
@@ -83,7 +90,7 @@ interface ReactRouterDomParams {
 const AnimeProfile: React.FC = () => {
   const [infoLoading, setInfoLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
-  const [anime, setAnime] = useState<Anime>({} as Anime);
+  const [anime, setAnime] = useState<Anime | null>(null);
   const [addCharacterModalActive, setAddCharacterModalActive] = useState(false);
   const [addCategoryModalActive, setAddCategoryModalActive] = useState(false);
   const { id } = useParams<ReactRouterDomParams>();
@@ -165,13 +172,12 @@ const AnimeProfile: React.FC = () => {
   );
 
   const handleAddCharacters = useCallback(
-    (characters: Character[]) => {
-      const updatedAnime = {
-        ...anime,
-        characters: [...anime.characters, ...characters],
-      };
+    async (character: Character) => {
+      if (!anime) return;
 
-      api.put(`/animes/${id}`, updatedAnime).then(response => {
+      await api.post(`/animes/characters/${anime.id}/add/${character.id}`);
+
+      api.get(`/animes/${id}`).then(response => {
         setAnime(response.data);
       });
     },
@@ -179,15 +185,12 @@ const AnimeProfile: React.FC = () => {
   );
 
   const handleDeleteCharacter = useCallback(
-    (character: Character) => {
-      const updatedAnime = {
-        ...anime,
-        characters: anime.characters.filter(
-          characterElement => characterElement.id !== character.id,
-        ),
-      };
+    async (character: Character) => {
+      if (!anime) return;
 
-      api.put(`/animes/${id}`, updatedAnime).then(response => {
+      await api.post(`/animes/characters/${anime.id}/remove/${character.id}`);
+
+      api.get(`/animes/${id}`).then(response => {
         setAnime(response.data);
       });
     },
@@ -196,6 +199,8 @@ const AnimeProfile: React.FC = () => {
 
   const handleAddCategories = useCallback(
     (categories: Category[]) => {
+      if (!anime) return;
+
       const existentCategoriesIds = anime.genres.map(
         genre => genre.category.id,
       );
@@ -222,6 +227,8 @@ const AnimeProfile: React.FC = () => {
 
   const handleDeleteGenre = useCallback(
     (genre: Genre) => {
+      if (!anime) return;
+
       const updatedAnime = {
         ...anime,
         genres: anime.genres.filter(
@@ -241,9 +248,9 @@ const AnimeProfile: React.FC = () => {
       <Container>
         <Header />
         <Content>
-          <Form initialData={anime} onSubmit={handleSubmit} ref={formRef}>
+          <Form initialData={anime || {}} onSubmit={handleSubmit} ref={formRef}>
             <BannerInput>
-              {anime.banner_url ? (
+              {anime?.banner_url ? (
                 <img src={anime.banner_url} alt={anime.title} />
               ) : (
                 <FiAlertCircle size="30" color="#565656" />
@@ -258,7 +265,7 @@ const AnimeProfile: React.FC = () => {
               </label>
             </BannerInput>
             <AvatarInput>
-              {anime.profile_url ? (
+              {anime?.profile_url ? (
                 <img src={anime.profile_url} alt={anime.title} />
               ) : (
                 <FiAlertCircle size="30" color="#565656" />
@@ -309,7 +316,7 @@ const AnimeProfile: React.FC = () => {
         </Content>
         <Content>
           <GenresContainer>
-            {anime.genres?.map(genre => (
+            {anime?.genres.map(genre => (
               <Genre key={genre.id} to={`/categories/${genre.category.id}`}>
                 <button
                   type="button"
@@ -334,7 +341,7 @@ const AnimeProfile: React.FC = () => {
         </Content>
         <Content>
           <CharactersContainer>
-            {anime.characters?.map(character => (
+            {anime?.animes_characters.map(({ character }) => (
               <Character key={character.id} to={`/characters/${character.id}`}>
                 <button
                   type="button"

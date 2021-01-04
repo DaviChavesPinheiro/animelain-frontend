@@ -29,7 +29,7 @@ interface SearchFormData {
 
 interface Props {
   onClose(): void;
-  onFinishSelectedCharacters(characters: Character[]): void;
+  onFinishSelectedCharacters(character: Character): void;
 }
 
 const SelectCharacterModal: React.FC<Props> = ({
@@ -40,7 +40,7 @@ const SelectCharacterModal: React.FC<Props> = ({
   const modalRef = useRef(null);
   const [loading, setLoading] = useState(false);
   const [characters, setCharacters] = useState<Character[] | null>(null);
-  const [seletedCharacters, setSeletedCharacters] = useState<Character[]>([]);
+  const [seletedCharacter, setSeletedCharacter] = useState<Character | null>();
 
   const handleSearchSubmit = useCallback(async (data: SearchFormData) => {
     try {
@@ -71,22 +71,9 @@ const SelectCharacterModal: React.FC<Props> = ({
     }
   }, []);
 
-  const handleCharacterSelect = useCallback(
-    (character: Character) => {
-      setSeletedCharacters([...seletedCharacters, character]);
-    },
-    [seletedCharacters],
-  );
-
-  const handleCharacterDeSelect = useCallback(
-    (character: Character) => {
-      const charactersFiltered = seletedCharacters.filter(
-        characterElement => characterElement.id !== character.id,
-      );
-      setSeletedCharacters(charactersFiltered);
-    },
-    [seletedCharacters],
-  );
+  const handleCharacterDeSelect = useCallback(() => {
+    setSeletedCharacter(null);
+  }, []);
 
   const handleCloseModal = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
@@ -98,9 +85,11 @@ const SelectCharacterModal: React.FC<Props> = ({
   );
 
   const handleAddCharacters = useCallback(() => {
-    onFinishSelectedCharacters(seletedCharacters);
+    if (!seletedCharacter) return;
+
+    onFinishSelectedCharacters(seletedCharacter);
     onClose();
-  }, [onClose, onFinishSelectedCharacters, seletedCharacters]);
+  }, [onClose, onFinishSelectedCharacters, seletedCharacter]);
 
   return (
     <Container ref={modalRef} onClick={handleCloseModal}>
@@ -109,7 +98,7 @@ const SelectCharacterModal: React.FC<Props> = ({
           <h2>Selecione um ou mais personagens</h2>
           <button
             onClick={handleAddCharacters}
-            disabled={!seletedCharacters.length}
+            disabled={!seletedCharacter}
             type="button"
           >
             Adicionar
@@ -132,58 +121,30 @@ const SelectCharacterModal: React.FC<Props> = ({
             ) : (
               characters &&
               characters.map(character => (
-                <Character
+                <CharacterContainer
                   key={character.id}
-                  character={character}
-                  handleCharacterSelect={handleCharacterSelect}
-                  handleCharacterDeSelect={handleCharacterDeSelect}
-                />
+                  onClick={() =>
+                    setSeletedCharacter(
+                      character.id === seletedCharacter?.id ? null : character,
+                      // eslint-disable-next-line prettier/prettier
+                    )}
+                  selected={character.id === seletedCharacter?.id}
+                >
+                  {character.profile_url ? (
+                    <img src={character.profile_url} alt={character.name} />
+                  ) : (
+                    <FiAlertCircle size="30" color="#565656" />
+                  )}
+                  <CharacterNameContainer>
+                    <span>{character.name}</span>
+                  </CharacterNameContainer>
+                </CharacterContainer>
               ))
             )}
           </CharactersContainer>
         </Body>
       </Content>
     </Container>
-  );
-};
-
-interface CharacterComponentProps {
-  character: Character;
-  handleCharacterSelect(character: Character): void;
-  handleCharacterDeSelect(character: Character): void;
-}
-
-const Character: React.FC<CharacterComponentProps> = ({
-  character,
-  handleCharacterSelect,
-  handleCharacterDeSelect,
-}) => {
-  const [selected, setSelected] = useState(false);
-
-  const onSelect = useCallback(() => {
-    if (selected) {
-      handleCharacterDeSelect(character);
-    } else {
-      handleCharacterSelect(character);
-    }
-    setSelected(!selected);
-  }, [character, handleCharacterDeSelect, handleCharacterSelect, selected]);
-
-  return (
-    <CharacterContainer
-      key={character.id}
-      onClick={onSelect}
-      selected={selected}
-    >
-      {character.profile_url ? (
-        <img src={character.profile_url} alt={character.name} />
-      ) : (
-        <FiAlertCircle size="30" color="#565656" />
-      )}
-      <CharacterNameContainer>
-        <span>{character.name}</span>
-      </CharacterNameContainer>
-    </CharacterContainer>
   );
 };
 
