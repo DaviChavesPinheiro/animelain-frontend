@@ -29,12 +29,12 @@ interface SearchFormData {
 
 interface Props {
   onClose(): void;
-  onFinishSelectedCharacters(character: Character): void;
+  onFinishSelectedCharacter(character: Character): void;
 }
 
 const SelectCharacterModal: React.FC<Props> = ({
   onClose,
-  onFinishSelectedCharacters,
+  onFinishSelectedCharacter,
 }) => {
   const formRef = useRef<FormHandles>(null);
   const modalRef = useRef(null);
@@ -71,10 +71,6 @@ const SelectCharacterModal: React.FC<Props> = ({
     }
   }, []);
 
-  const handleCharacterDeSelect = useCallback(() => {
-    setSeletedCharacter(null);
-  }, []);
-
   const handleCloseModal = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
       if (event.target === modalRef.current) {
@@ -87,9 +83,9 @@ const SelectCharacterModal: React.FC<Props> = ({
   const handleAddCharacters = useCallback(() => {
     if (!seletedCharacter) return;
 
-    onFinishSelectedCharacters(seletedCharacter);
+    onFinishSelectedCharacter(seletedCharacter);
     onClose();
-  }, [onClose, onFinishSelectedCharacters, seletedCharacter]);
+  }, [onClose, onFinishSelectedCharacter, seletedCharacter]);
 
   return (
     <Container ref={modalRef} onClick={handleCloseModal}>

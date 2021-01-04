@@ -171,11 +171,11 @@ const AnimeProfile: React.FC = () => {
     [id],
   );
 
-  const handleAddCharacters = useCallback(
+  const handleAddCharacter = useCallback(
     async (character: Character) => {
       if (!anime) return;
 
-      await api.post(`/animes/characters/${anime.id}/add/${character.id}`);
+      await api.post(`/animes/characters/${anime.id}/${character.id}`);
 
       api.get(`/animes/${id}`).then(response => {
         setAnime(response.data);
@@ -188,7 +188,7 @@ const AnimeProfile: React.FC = () => {
     async (character: Character) => {
       if (!anime) return;
 
-      await api.post(`/animes/characters/${anime.id}/remove/${character.id}`);
+      await api.delete(`/animes/characters/${anime.id}/${character.id}`);
 
       api.get(`/animes/${id}`).then(response => {
         setAnime(response.data);
@@ -197,28 +197,17 @@ const AnimeProfile: React.FC = () => {
     [anime, id],
   );
 
-  const handleAddCategories = useCallback(
-    (categories: Category[]) => {
+  const handleAddCategory = useCallback(
+    async (category: Category) => {
       if (!anime) return;
 
-      const existentCategoriesIds = anime.genres.map(
-        genre => genre.category.id,
-      );
-
-      const filteredCategories = categories.filter(
-        category => !existentCategoriesIds.includes(category.id),
-      );
-
-      const genresToBeAdded = filteredCategories.map(category => ({
+      const genre = {
         score: 1,
-        category,
-      }));
-      const updatedAnime = {
-        ...anime,
-        genres: [...anime.genres, ...genresToBeAdded],
       };
 
-      api.put(`/animes/${id}`, updatedAnime).then(response => {
+      await api.post(`/animes/genres/${anime.id}/${category.id}`, genre);
+
+      api.get(`/animes/${id}`).then(response => {
         setAnime(response.data);
       });
     },
@@ -226,17 +215,12 @@ const AnimeProfile: React.FC = () => {
   );
 
   const handleDeleteGenre = useCallback(
-    (genre: Genre) => {
+    async (genre: Genre) => {
       if (!anime) return;
 
-      const updatedAnime = {
-        ...anime,
-        genres: anime.genres.filter(
-          genreElement => genreElement.id !== genre.id,
-        ),
-      };
+      await api.delete(`/animes/genres/${anime.id}/${genre.category.id}`);
 
-      api.put(`/animes/${id}`, updatedAnime).then(response => {
+      api.get(`/animes/${id}`).then(response => {
         setAnime(response.data);
       });
     },
@@ -376,13 +360,13 @@ const AnimeProfile: React.FC = () => {
       {addCharacterModalActive && (
         <SelectCharacterModal
           onClose={() => setAddCharacterModalActive(false)}
-          onFinishSelectedCharacters={handleAddCharacters}
+          onFinishSelectedCharacter={handleAddCharacter}
         />
       )}
       {addCategoryModalActive && (
         <SelectCategoryModal
           onClose={() => setAddCategoryModalActive(false)}
-          onFinishSelectedCategories={handleAddCategories}
+          onFinishSelectedCategory={handleAddCategory}
         />
       )}
     </>

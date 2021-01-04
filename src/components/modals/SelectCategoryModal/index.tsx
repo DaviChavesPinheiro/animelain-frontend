@@ -27,18 +27,18 @@ interface SearchFormData {
 
 interface Props {
   onClose(): void;
-  onFinishSelectedCategories(categories: Category[]): void;
+  onFinishSelectedCategory(category: Category): void;
 }
 
 const SelectCategoryModal: React.FC<Props> = ({
   onClose,
-  onFinishSelectedCategories,
+  onFinishSelectedCategory,
 }) => {
   const formRef = useRef<FormHandles>(null);
   const modalRef = useRef(null);
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState<Category[] | null>(null);
-  const [seletedCategories, setSeletedCategories] = useState<Category[]>([]);
+  const [seletedCategory, setSeletedCategory] = useState<Category | null>(null);
 
   useEffect(() => {
     api.get('/categories').then(response => {
@@ -75,23 +75,6 @@ const SelectCategoryModal: React.FC<Props> = ({
     }
   }, []);
 
-  const handleCategorySelect = useCallback(
-    (category: Category) => {
-      setSeletedCategories([...seletedCategories, category]);
-    },
-    [seletedCategories],
-  );
-
-  const handleCategoryDeSelect = useCallback(
-    (category: Category) => {
-      const categoriesFiltered = seletedCategories.filter(
-        categoryElement => categoryElement.id !== category.id,
-      );
-      setSeletedCategories(categoriesFiltered);
-    },
-    [seletedCategories],
-  );
-
   const handleCloseModal = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
       if (event.target === modalRef.current) {
@@ -102,9 +85,11 @@ const SelectCategoryModal: React.FC<Props> = ({
   );
 
   const handleAddCategories = useCallback(() => {
-    onFinishSelectedCategories(seletedCategories);
+    if (!seletedCategory) return;
+
+    onFinishSelectedCategory(seletedCategory);
     onClose();
-  }, [onClose, onFinishSelectedCategories, seletedCategories]);
+  }, [onClose, onFinishSelectedCategory, seletedCategory]);
 
   return (
     <Container ref={modalRef} onClick={handleCloseModal}>
@@ -113,7 +98,7 @@ const SelectCategoryModal: React.FC<Props> = ({
           <h2>Selecione uma ou mais categorias</h2>
           <button
             onClick={handleAddCategories}
-            disabled={!seletedCategories.length}
+            disabled={!seletedCategory}
             type="button"
           >
             Adicionar
@@ -136,47 +121,25 @@ const SelectCategoryModal: React.FC<Props> = ({
             ) : (
               categories &&
               categories.map(category => (
-                <Category
+                <CategoryElement
                   key={category.id}
-                  category={category}
-                  handleCategorySelect={handleCategorySelect}
-                  handleCategoryDeSelect={handleCategoryDeSelect}
-                />
+                  onClick={
+                    () =>
+                      setSeletedCategory(
+                        category.id === seletedCategory?.id ? null : category,
+                      )
+                    // eslint-disable-next-line react/jsx-curly-newline
+                  }
+                  selected={category.id === seletedCategory?.id}
+                >
+                  {category.name}
+                </CategoryElement>
               ))
             )}
           </CategoriesContainer>
         </Body>
       </Content>
     </Container>
-  );
-};
-
-interface CategoryComponentProps {
-  category: Category;
-  handleCategorySelect(category: Category): void;
-  handleCategoryDeSelect(category: Category): void;
-}
-
-const Category: React.FC<CategoryComponentProps> = ({
-  category,
-  handleCategorySelect,
-  handleCategoryDeSelect,
-}) => {
-  const [selected, setSelected] = useState(false);
-
-  const onSelect = useCallback(() => {
-    if (selected) {
-      handleCategoryDeSelect(category);
-    } else {
-      handleCategorySelect(category);
-    }
-    setSelected(!selected);
-  }, [category, handleCategoryDeSelect, handleCategorySelect, selected]);
-
-  return (
-    <CategoryElement key={category.id} onClick={onSelect} selected={selected}>
-      {category.name}
-    </CategoryElement>
   );
 };
 
