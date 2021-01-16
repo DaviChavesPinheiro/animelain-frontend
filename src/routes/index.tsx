@@ -19,7 +19,6 @@ import CreateCategoryPage from '../pages/CreateCategoryPage';
 
 const Routes: React.FC = () => (
   <Switch>
-    <Route path="/" exact component={SignIn} />
     <Route path="/signup" component={SignUp} />
     <Route path="/forgot-password" component={ForgotPassword} />
     <Route path="/reset-password" component={ResetPassword} />
@@ -41,6 +40,8 @@ const Routes: React.FC = () => (
     {/* <Route path="/categories" component={Dashboard} isPrivate /> */}
 
     <Route path="/profile" component={Profile} isPrivate />
+
+    <Route path="/" component={SignIn} />
   </Switch>
 );
 
